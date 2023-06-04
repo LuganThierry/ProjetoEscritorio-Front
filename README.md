@@ -26,3 +26,35 @@ https://github.com/LuganThierry/ProjetoEscritorio-Back
 <strong> Página Web </strong>
 
 Essa página web consome, trata e expõe os dados recebidos pela API acima. 
+
+<h2> Tecnologias Utilizadas na API </h2>
+<ol> 
+    <li> HTML </li>
+    <li> CSS </li>
+    <li> JavaScript </li>
+</ol>
+
+<h2> Funcionalidades </h2>
+
+<h3> Funcionamento regular </h3>
+Ao digitar o id de um advogado que exista no banco de dados, serão expostos na tela todos os processos atribuidos a este advogado. 
+
+![image](https://github.com/LuganThierry/ProjetoEscritorio-Front/assets/106288264/72c10b97-5077-4907-adab-6dd048fb06d6)
+
+O campo de dados do processo mostra o número do processo e o próximo prazo relavante. 
+
+Caso o processo esteja marcado como arquivo no banco de dados, ao invés do próximo prazo, este campo será preenchido como "processo arquivado". 
+
+![image](https://github.com/LuganThierry/ProjetoEscritorio-Front/assets/106288264/57d9f81b-943f-414c-a7af-c195d2d447d8)
+
+<h3> Funcionamento irregular </h3>
+Se o ID digitado não for encontado no banco de dados, o sistema responde que não foi encontrado advogado para o respectivo ID.
+
+![image](https://github.com/LuganThierry/ProjetoEscritorio-Front/assets/106288264/d9777798-5669-44fc-8e76-39a4e63e9fb3)
+
+A mesma reação ocorre se o formato for irregular. 
+
+![image](https://github.com/LuganThierry/ProjetoEscritorio-Front/assets/106288264/969d90cb-2390-4a15-a515-bcbf979f961d)
+
+<h2> Funcionalidades futuras </h2>
+A próxima funcionalidade a ser implementada deve ser a inclusão do nome do cliente como um dos dados do processo. 
