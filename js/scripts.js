@@ -4,6 +4,24 @@ const relatorioBtn = document.querySelector("#gerar-relatorio");
 const container = document.querySelector('.dados-processos-container');
 
 // Funções
+async function PegarNomeAdvogado(id) {
+  try {
+    const response = await fetch(`https://localhost:7176/api/Pessoas/${id}`);
+    if (response.status === 404) {
+      throw new Error('Advogado não encontrado no banco de dados');
+    }
+    if (!response.ok) {
+      throw new Error('Erro ao buscar o nome do advogado');
+    }
+    const data = await response.json();
+    return data.nome;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+
 async function PegarDadosProcessos(id) {
   try {
     const response = await fetch(`https://localhost:7176/api/Processos/advogado/${id}/processos`);
@@ -20,46 +38,61 @@ async function PegarDadosProcessos(id) {
   }
 }
 
-const PegarIdAdvogado = async (id) => {
-  const data = await PegarDadosProcessos(id);
+
+async function PegarIdAdvogado(id) {
+  const nomeAdvogado = await PegarNomeAdvogado(id);
 
   container.innerHTML = '';
 
-  if (data) {
-    data.forEach((processo) => {
-      const processoDiv = document.createElement('div');
-      processoDiv.classList.add('dados-processos');
+  if (nomeAdvogado) {
+    const data = await PegarDadosProcessos(id);
 
-      const numeroProcesso = processo.numero_processo;
-      const arquivo = processo.arquivo;
-      const proximoPrazo = formatarData(processo.proximo_prazo);
+    if (data) {
+      const textoProcessos = document.createElement('p');
+      textoProcessos.classList.add('nome-advogado');
+      textoProcessos.textContent = `Processos do/a advogado/a ${nomeAdvogado}`;
+      container.appendChild(textoProcessos);
 
-      let status;
-      if (arquivo) {
-        status = 'Processo arquivado';
-      } else {
-        status = `Próximo prazo: ${proximoPrazo}`;
-      }
+      data.forEach((processo) => {
+        const processoDiv = document.createElement('div');
+        processoDiv.classList.add('dados-processos');
 
-      processoDiv.innerHTML = `
-        <h2>
-          <span class="processo">${numeroProcesso}</span>
-        </h2>
-        <p>
-          <span class="status">${status}</span>
-        </p>
-      `;
+        const numeroProcesso = processo.numero_processo;
+        const arquivo = processo.arquivo;
+        const proximoPrazo = formatarData(processo.proximo_prazo);
 
-      container.appendChild(processoDiv);
-    });
+        let status;
+        if (arquivo) {
+          status = 'Processo arquivado';
+        } else {
+          status = `Próximo prazo: ${proximoPrazo}`;
+        }
+
+        processoDiv.innerHTML = `
+          <h2>
+            <span class="processo">${numeroProcesso}</span>
+          </h2>
+          <p>
+            <span class="status">${status}</span>
+          </p>
+        `;
+
+        container.appendChild(processoDiv);
+      });
+    } else {
+      const erroDiv = document.createElement('div');
+      erroDiv.classList.add('dados-processos');
+      erroDiv.innerHTML = `Advogado para o ID ${id} não foi encontrado no banco de dados`;
+      container.appendChild(erroDiv);
+    }
   } else {
     const erroDiv = document.createElement('div');
     erroDiv.classList.add('dados-processos');
     erroDiv.innerHTML = `Advogado para o ID ${id} não foi encontrado no banco de dados`;
-    container.innerHTML = '';
     container.appendChild(erroDiv);
   }
-};
+}
+
 
 function formatarData(data) {
     const dataObj = new Date(data);
