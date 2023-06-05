@@ -104,9 +104,9 @@ function formatarData(data) {
     return `${dia}/${mes}/${ano}`;
   }
   
-  const data = '2022-08-29T16:44:06';
-  const dataFormatada = formatarData(data);
-  console.log(dataFormatada);
+//  const data = '2022-08-29T16:44:06';
+//  const dataFormatada = formatarData(data);
+//  console.log(dataFormatada);
 
 
 // Eventos
